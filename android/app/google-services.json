@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "927552561458",
+    "firebase_url": "https://rozgarapp-76bc8-default-rtdb.firebaseio.com",
+    "project_id": "rozgarapp-76bc8",
+    "storage_bucket": "rozgarapp-76bc8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927552561458:android:523d7849874125326ab72b",
+        "android_client_info": {
+          "package_name": "com.example.rozgaar_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzVf_hC-BEtMJeqNO13jrT084kkWdWcsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
