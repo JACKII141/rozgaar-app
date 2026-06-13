@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'login_screen.dart';
 import 'workers_screen.dart';
 import 'worker_profile_screen.dart';
@@ -19,6 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? userName;
   String? userRole;
   bool isLoading = true;
+  BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
 
   final List<Map<String, dynamic>> categories = [
     {'name': 'Plumber', 'icon': Icons.plumbing, 'color': Color(0xFF3498DB)},
@@ -75,6 +78,29 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     loadUserData();
+    loadAd();
+  }
+
+  void loadAd() {
+    _bannerAd = BannerAd(
+      adUnitId: 'ca-app-pub-9699182556705292/4612929358',
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() => _isAdLoaded = true);
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+        },
+      ),
+    )..load();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   Future<void> loadUserData() async {
@@ -279,11 +305,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: currentView == 'worker' ? _workerDashboard() : _clientDashboard(),
+      bottomSheet: _isAdLoaded
+          ? Container(height: 50, child: AdWidget(ad: _bannerAd!))
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
           setState(() => _selectedIndex = index);
-          if (index == 2) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatListScreen()),
+            );
+          } else if (index == 2) {
             if (currentView == 'worker') {
               Navigator.push(
                 context,
